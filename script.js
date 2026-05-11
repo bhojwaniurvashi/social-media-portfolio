@@ -64,6 +64,8 @@ function renderSectionCards() {
   var grid = document.getElementById('sections-grid');
   if (!grid) return;
 
+  var rotatingCovers = [];
+
   SECTIONS.forEach(function (section) {
     var items = GALLERY_DATA.filter(function (item) {
       return item.category === section.key;
@@ -75,14 +77,29 @@ function renderSectionCards() {
     card.className = 'section-card';
     card.href = 'section.html?key=' + encodeURIComponent(section.key);
 
-    // Cover image — use first image, or poster of first video
     var cover = document.createElement('div');
     cover.className = 'section-card__cover';
 
-    var firstImage = items.find(function (i) { return i.type === 'image'; });
-    var coverSrc = firstImage ? firstImage.src : (items[0].poster || '');
+    var images = items.filter(function (i) { return i.type === 'image'; });
+    var coverSrc = images.length > 0 ? images[0].src : (items[0].poster || '');
 
-    if (coverSrc) {
+    if (coverSrc && images.length > 1) {
+      // Two stacked images for crossfade rotation
+      var front = document.createElement('img');
+      front.src = encodeSrc(coverSrc);
+      front.alt = section.name;
+      front.loading = 'lazy';
+      front.className = 'cover-front';
+
+      var back = document.createElement('img');
+      back.alt = section.name;
+      back.className = 'cover-back';
+
+      cover.appendChild(front);
+      cover.appendChild(back);
+
+      rotatingCovers.push({ front: front, back: back, images: images, currentIndex: 0, showingFront: true });
+    } else if (coverSrc) {
       var img = document.createElement('img');
       img.src = encodeSrc(coverSrc);
       img.alt = section.name;
@@ -92,7 +109,6 @@ function renderSectionCards() {
       };
       cover.appendChild(img);
     } else {
-      // Video-only section with no poster — show play icon placeholder
       cover.innerHTML = '<div class="section-card__placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="rgba(56,189,248,0.3)"/><polygon points="19,15 19,33 35,24" fill="white"/></svg></div>';
     }
 
@@ -105,7 +121,7 @@ function renderSectionCards() {
 
     var count = document.createElement('span');
     count.className = 'section-card__count';
-    var imgCount = items.filter(function (i) { return i.type === 'image'; }).length;
+    var imgCount = images.length;
     var vidCount = items.filter(function (i) { return i.type === 'video'; }).length;
     var parts = [];
     if (imgCount > 0) parts.push(imgCount + (imgCount === 1 ? ' image' : ' images'));
@@ -118,6 +134,38 @@ function renderSectionCards() {
     card.appendChild(info);
     grid.appendChild(card);
   });
+
+  // Stagger the rotation start so cards don't all flip at once
+  if (rotatingCovers.length > 0) {
+    rotatingCovers.forEach(function (entry, i) {
+      setTimeout(function () {
+        rotateCover(entry);
+        setInterval(function () { rotateCover(entry); }, 3000);
+      }, 1000 + i * 500);
+    });
+  }
+}
+
+/** Pick a random next image and crossfade */
+function rotateCover(entry) {
+  var nextIndex;
+  do {
+    nextIndex = Math.floor(Math.random() * entry.images.length);
+  } while (nextIndex === entry.currentIndex && entry.images.length > 1);
+
+  entry.currentIndex = nextIndex;
+  var nextSrc = encodeSrc(entry.images[nextIndex].src);
+
+  if (entry.showingFront) {
+    entry.back.src = nextSrc;
+    entry.back.classList.add('active');
+    entry.front.classList.add('active');
+  } else {
+    entry.front.src = nextSrc;
+    entry.back.classList.remove('active');
+    entry.front.classList.remove('active');
+  }
+  entry.showingFront = !entry.showingFront;
 }
 
 /* ============================================================
