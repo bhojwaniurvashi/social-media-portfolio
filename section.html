@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Section | Urvashi Bhojwani</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-brand">Urvashi Bhojwani</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#results">Results</a></li>
+    <li><a href="index.html#case">Case Studies</a></li>
+    <li><a href="index.html#work">Creative Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- DETAIL HEADER -->
+<section class="detail-header">
+  <a href="index.html#work" class="back-link">&larr; Back to Gallery</a>
+  <h1 id="detail-title">Section</h1>
+  <p id="detail-count" class="detail-count"></p>
+</section>
+
+<!-- DETAIL GRID -->
+<section class="detail-section">
+  <div class="detail-grid" id="detail-grid">
+    <!-- Injected by section.js -->
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Media lightbox">
+  <div class="lightbox-backdrop"></div>
+  <div class="lightbox-content">
+    <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+    <!-- img or video injected dynamically -->
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="section.js"></script>
+</body>
+</html>

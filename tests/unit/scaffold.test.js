@@ -1,9 +1,9 @@
 /**
  * Scaffold smoke tests — verifies the project setup is correct.
- * These tests validate Requirements 9.1 and 9.4 at the data level.
+ * These tests validate data structure at the data level.
  */
 import { describe, it, expect } from 'vitest';
-import { GALLERY_DATA, CASE_STUDY_PAGES, SECTION_MANIFEST, isVideoFile } from '../../script.js';
+import { GALLERY_DATA, CASE_STUDIES, SECTIONS, isVideoFile } from '../../data.esm.js';
 
 describe('GALLERY_DATA manifest', () => {
   it('is a non-empty array', () => {
@@ -34,10 +34,10 @@ describe('GALLERY_DATA manifest', () => {
     }
   });
 
-  it('every entry category is one of the valid values', () => {
-    const validCategories = new Set(['brand', 'festive', 'carousel', 'grid', 'reel']);
+  it('every entry category matches a key in SECTIONS', () => {
+    const validKeys = new Set(SECTIONS.map(s => s.key));
     for (const item of GALLERY_DATA) {
-      expect(validCategories.has(item.category)).toBe(true);
+      expect(validKeys.has(item.category)).toBe(true);
     }
   });
 
@@ -57,35 +57,42 @@ describe('GALLERY_DATA manifest', () => {
   });
 });
 
-describe('CASE_STUDY_PAGES', () => {
-  it('is an array', () => {
-    expect(Array.isArray(CASE_STUDY_PAGES)).toBe(true);
+describe('CASE_STUDIES', () => {
+  it('is a non-empty array', () => {
+    expect(Array.isArray(CASE_STUDIES)).toBe(true);
+    expect(CASE_STUDIES.length).toBeGreaterThan(0);
+  });
+
+  it('every entry has required fields: id, title, desc, result, image', () => {
+    for (const study of CASE_STUDIES) {
+      expect(study).toHaveProperty('id');
+      expect(study).toHaveProperty('title');
+      expect(study).toHaveProperty('desc');
+      expect(study).toHaveProperty('result');
+      expect(study).toHaveProperty('image');
+    }
   });
 });
 
-describe('SECTION_MANIFEST', () => {
+describe('SECTIONS', () => {
   it('contains exactly 12 entries', () => {
-    expect(SECTION_MANIFEST.length).toBe(12);
+    expect(SECTIONS.length).toBe(12);
   });
 
-  it('contains all required subfolder names', () => {
-    const required = [
-      'Connected 3 grids',
-      'Creatives for website',
-      'Festive creatives',
-      'Influencer reels',
-      'Informative Carousel',
-      'New or soft launch or coming soon creatives',
-      'Reels',
-      'Social Media covers',
-      'Static',
-      'Trending reels and memes',
-      'Voiceover reels',
-      'Youtube shorts',
-    ];
-    for (const name of required) {
-      expect(SECTION_MANIFEST).toContain(name);
+  it('every entry has key, name, and folder fields', () => {
+    for (const section of SECTIONS) {
+      expect(section).toHaveProperty('key');
+      expect(section).toHaveProperty('name');
+      expect(section).toHaveProperty('folder');
+      expect(typeof section.key).toBe('string');
+      expect(typeof section.name).toBe('string');
+      expect(typeof section.folder).toBe('string');
     }
+  });
+
+  it('every section key is unique', () => {
+    const keys = SECTIONS.map(s => s.key);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 });
 

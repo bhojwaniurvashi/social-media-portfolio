@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study | Urvashi Bhojwani</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-brand">Urvashi Bhojwani</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#results">Results</a></li>
+    <li><a href="index.html#case">Case Studies</a></li>
+    <li><a href="index.html#work">Creative Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- CASE STUDY CONTENT -->
+<section class="detail-header">
+  <a href="index.html#case" class="back-link">&larr; Back to Case Studies</a>
+  <h1 id="cs-title">Case Study</h1>
+</section>
+
+<section class="case-detail">
+  <div class="case-detail__hero">
+    <img id="cs-image" src="" alt="">
+  </div>
+  <div class="case-detail__body">
+    <p id="cs-desc" class="case-detail__desc"></p>
+    <div class="case-detail__result">
+      <span class="result-label">Result:</span>
+      <span id="cs-result" class="result-value"></span>
+    </div>
+    <div class="case-detail__content" id="cs-content">
+      <h2>About This Project</h2>
+      <p>Detailed case study content coming soon. This section will include strategy breakdown, execution timeline, metrics analysis, and key takeaways.</p>
+    </div>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
+  var study = CASE_STUDIES.find(function (s) { return s.id === id; });
+
+  if (!study) {
+    document.getElementById('cs-title').textContent = 'Case Study Not Found';
+    return;
+  }
+
+  document.title = study.title + ' | Urvashi Bhojwani';
+  document.getElementById('cs-title').textContent = study.title;
+  document.getElementById('cs-desc').textContent = study.desc;
+  document.getElementById('cs-result').textContent = study.result;
+
+  var img = document.getElementById('cs-image');
+  img.src = study.image;
+  img.alt = study.title;
+
+  // Hamburger
+  var hamburger = document.querySelector('.hamburger');
+  var navLinks = document.querySelector('.nav-links');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', function () {
+      navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+    });
+  }
+})();
+</script>
+</body>
+</html>
