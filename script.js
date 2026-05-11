@@ -140,7 +140,7 @@ function renderSectionCards() {
     rotatingCovers.forEach(function (entry, i) {
       setTimeout(function () {
         rotateCover(entry);
-        setInterval(function () { rotateCover(entry); }, 3000);
+        setInterval(function () { rotateCover(entry); }, 5000);
       }, 1000 + i * 500);
     });
   }
