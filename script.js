@@ -19,7 +19,7 @@ function renderCaseStudies() {
     card.href = 'case-study.html?id=' + encodeURIComponent(study.id);
 
     var img = document.createElement('img');
-    img.src = study.image;
+    img.src = encodeSrc(study.image);
     img.alt = study.title;
     img.loading = 'lazy';
     img.onerror = function () {
@@ -84,7 +84,7 @@ function renderSectionCards() {
 
     if (coverSrc) {
       var img = document.createElement('img');
-      img.src = coverSrc;
+      img.src = encodeSrc(coverSrc);
       img.alt = section.name;
       img.loading = 'lazy';
       img.onerror = function () {

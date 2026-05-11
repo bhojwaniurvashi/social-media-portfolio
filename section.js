@@ -35,7 +35,7 @@
 
     if (item.type === 'image') {
       var img = document.createElement('img');
-      img.src = item.src;
+      img.src = encodeSrc(item.src);
       img.alt = item.alt;
       img.loading = 'lazy';
       img.onerror = function () {
@@ -48,11 +48,11 @@
       });
     } else {
       var video = document.createElement('video');
-      video.src = item.src;
+      video.src = encodeSrc(item.src);
       video.preload = 'metadata';
       video.muted = true;
       video.setAttribute('playsinline', '');
-      if (item.poster) video.poster = item.poster;
+      if (item.poster) video.poster = encodeSrc(item.poster);
 
       video.onerror = function () {
         card.innerHTML = '<div class="media-error"><span>Video unavailable</span></div>';
@@ -83,14 +83,14 @@
     var media;
     if (item.type === 'video') {
       media = document.createElement('video');
-      media.src = item.src;
+      media.src = encodeSrc(item.src);
       media.controls = true;
       media.autoplay = true;
       media.setAttribute('playsinline', '');
-      if (item.poster) media.poster = item.poster;
+      if (item.poster) media.poster = encodeSrc(item.poster);
     } else {
       media = document.createElement('img');
-      media.src = item.src;
+      media.src = encodeSrc(item.src);
       media.alt = item.alt || '';
     }
 

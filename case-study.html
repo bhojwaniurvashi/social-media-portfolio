@@ -68,7 +68,7 @@
   document.getElementById('cs-result').textContent = study.result;
 
   var img = document.getElementById('cs-image');
-  img.src = study.image;
+  img.src = encodeSrc(study.image);
   img.alt = study.title;
 
   // Hamburger

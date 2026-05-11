@@ -17,7 +17,7 @@ const code = readFileSync(resolve(__dirname, 'data.js'), 'utf-8');
 const cleanCode = code.replace(/if\s*\(typeof window[^}]*\{[^}]*\}/s, '');
 
 // Wrap in a function that returns the declarations
-const wrappedCode = cleanCode + '\nreturn { GALLERY_DATA, SECTIONS, CASE_STUDIES, isVideoFile };';
+const wrappedCode = cleanCode + '\nreturn { GALLERY_DATA, SECTIONS, CASE_STUDIES, isVideoFile, encodeSrc };';
 const fn = new Function(wrappedCode);
 const data = fn();
 
@@ -25,3 +25,4 @@ export const GALLERY_DATA = data.GALLERY_DATA;
 export const SECTIONS = data.SECTIONS;
 export const CASE_STUDIES = data.CASE_STUDIES;
 export const isVideoFile = data.isVideoFile;
+export const encodeSrc = data.encodeSrc;

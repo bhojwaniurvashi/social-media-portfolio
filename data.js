@@ -215,6 +215,11 @@ function isVideoFile(filename) {
   return /\.mp4$/i.test(filename);
 }
 
+/** Encode each segment of a relative path so spaces / parens work on web servers */
+function encodeSrc(path) {
+  return path.split('/').map(function (seg) { return encodeURIComponent(seg); }).join('/');
+}
+
 /* ============================================================
    Browser globals — available when loaded as <script src="data.js">
    ============================================================ */
@@ -223,4 +228,5 @@ if (typeof window !== 'undefined') {
   window.SECTIONS = SECTIONS;
   window.CASE_STUDIES = CASE_STUDIES;
   window.isVideoFile = isVideoFile;
+  window.encodeSrc = encodeSrc;
 }
