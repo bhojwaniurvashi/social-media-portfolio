@@ -134,7 +134,7 @@ const CASE_STUDIES = [
     result: '300 to 2.3K followers in 3 months',
     image: 'images/Creatives for website/Artboard 1 (15).jpg',
   },
-  // ...
+  // 
 ];
 ```
 
