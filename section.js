@@ -47,14 +47,36 @@
         openLightbox(item);
       });
     } else {
-      var video = document.createElement('video');
-      video.src = encodeSrc(item.src);
-      video.preload = 'metadata';
-      video.muted = true;
-      video.setAttribute('playsinline', '');
-      if (item.poster) video.poster = encodeSrc(item.poster);
+      // Show a thumbnail image for the video card (generated from the video itself)
+      var thumbImg = document.createElement('img');
+      thumbImg.alt = item.alt;
+      thumbImg.loading = 'lazy';
 
-      video.onerror = function () {
+      // Generate thumbnail from video frame
+      var thumbVideo = document.createElement('video');
+      thumbVideo.preload = 'metadata';
+      thumbVideo.muted = true;
+      thumbVideo.playsInline = true;
+      thumbVideo.src = encodeSrc(item.src);
+
+      thumbVideo.addEventListener('loadeddata', function () {
+        thumbVideo.currentTime = Math.min(1, thumbVideo.duration || 0);
+      });
+
+      thumbVideo.addEventListener('seeked', function () {
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = thumbVideo.videoWidth || 640;
+          canvas.height = thumbVideo.videoHeight || 640;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(thumbVideo, 0, 0, canvas.width, canvas.height);
+          thumbImg.src = canvas.toDataURL('image/jpeg', 0.8);
+        } catch (e) {
+          // fallback — leave blank
+        }
+      });
+
+      thumbVideo.onerror = function () {
         card.innerHTML = '<div class="media-error"><span>Video unavailable</span></div>';
       };
 
@@ -62,7 +84,7 @@
       overlay.className = 'play-overlay';
       overlay.innerHTML = '<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.5)"/><polygon points="19,15 19,33 35,24" fill="white"/></svg>';
 
-      card.appendChild(video);
+      card.appendChild(thumbImg);
       card.appendChild(overlay);
 
       card.addEventListener('click', function () {

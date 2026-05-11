@@ -81,33 +81,60 @@ function renderSectionCards() {
     cover.className = 'section-card__cover';
 
     var images = items.filter(function (i) { return i.type === 'image'; });
-    var coverSrc = images.length > 0 ? images[0].src : (items[0].poster || '');
+    var videos = items.filter(function (i) { return i.type === 'video'; });
 
-    if (coverSrc && images.length > 1) {
+    // All items participate in rotation (images directly, videos via thumbnail)
+    var allItems = images.concat(videos);
+    var coverSrc = images.length > 0 ? images[0].src : '';
+
+    if (allItems.length > 1) {
       // Two stacked images for crossfade rotation
       var front = document.createElement('img');
-      front.src = encodeSrc(coverSrc);
       front.alt = section.name;
-      front.loading = 'lazy';
       front.className = 'cover-front';
 
       var back = document.createElement('img');
       back.alt = section.name;
       back.className = 'cover-back';
 
+      // For the initial cover, use first image if available; otherwise generate from first video
+      if (coverSrc) {
+        front.src = encodeSrc(coverSrc);
+      } else {
+        // Video-only section: generate thumbnail for initial cover
+        generateVideoThumbnail(videos[0].src, function (dataUrl) {
+          front.src = dataUrl;
+        });
+      }
+
       cover.appendChild(front);
       cover.appendChild(back);
 
-      rotatingCovers.push({ front: front, back: back, images: images, currentIndex: 0, showingFront: true });
-    } else if (coverSrc) {
-      var img = document.createElement('img');
-      img.src = encodeSrc(coverSrc);
-      img.alt = section.name;
-      img.loading = 'lazy';
-      img.onerror = function () {
-        cover.innerHTML = '<div class="section-card__placeholder"><span>No Preview</span></div>';
-      };
-      cover.appendChild(img);
+      rotatingCovers.push({ front: front, back: back, allItems: allItems, currentIndex: 0, showingFront: true });
+    } else if (allItems.length === 1) {
+      var singleItem = allItems[0];
+      if (singleItem.type === 'image') {
+        var img = document.createElement('img');
+        img.src = encodeSrc(singleItem.src);
+        img.alt = section.name;
+        img.loading = 'lazy';
+        img.onerror = function () {
+          cover.innerHTML = '<div class="section-card__placeholder"><span>No Preview</span></div>';
+        };
+        cover.appendChild(img);
+      } else {
+        // Single video — generate thumbnail
+        var thumbImg = document.createElement('img');
+        thumbImg.alt = section.name;
+        thumbImg.loading = 'lazy';
+        generateVideoThumbnail(singleItem.src, function (dataUrl) {
+          thumbImg.src = dataUrl;
+        });
+        thumbImg.onerror = function () {
+          cover.innerHTML = '<div class="section-card__placeholder"><span>No Preview</span></div>';
+        };
+        cover.appendChild(thumbImg);
+      }
     } else {
       cover.innerHTML = '<div class="section-card__placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="rgba(56,189,248,0.3)"/><polygon points="19,15 19,33 35,24" fill="white"/></svg></div>';
     }
@@ -122,7 +149,7 @@ function renderSectionCards() {
     var count = document.createElement('span');
     count.className = 'section-card__count';
     var imgCount = images.length;
-    var vidCount = items.filter(function (i) { return i.type === 'video'; }).length;
+    var vidCount = videos.length;
     var parts = [];
     if (imgCount > 0) parts.push(imgCount + (imgCount === 1 ? ' image' : ' images'));
     if (vidCount > 0) parts.push(vidCount + (vidCount === 1 ? ' video' : ' videos'));
@@ -146,26 +173,65 @@ function renderSectionCards() {
   }
 }
 
-/** Pick a random next image and crossfade */
+/**
+ * Generate a thumbnail from a video file by capturing the first visible frame.
+ * Calls callback(dataUrl) once the frame is captured.
+ */
+function generateVideoThumbnail(videoSrc, callback) {
+  var video = document.createElement('video');
+  video.preload = 'metadata';
+  video.muted = true;
+  video.playsInline = true;
+  video.src = encodeSrc(videoSrc);
+
+  video.addEventListener('loadeddata', function () {
+    // Seek to 1 second (or 0 if video is shorter) for a better frame
+    video.currentTime = Math.min(1, video.duration || 0);
+  });
+
+  video.addEventListener('seeked', function () {
+    try {
+      var canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 640;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      callback(canvas.toDataURL('image/jpeg', 0.8));
+    } catch (e) {
+      // CORS or other error — leave image empty
+    }
+  });
+}
+
+/** Pick a random next item (image or video) and crossfade */
 function rotateCover(entry) {
   var nextIndex;
   do {
-    nextIndex = Math.floor(Math.random() * entry.images.length);
-  } while (nextIndex === entry.currentIndex && entry.images.length > 1);
+    nextIndex = Math.floor(Math.random() * entry.allItems.length);
+  } while (nextIndex === entry.currentIndex && entry.allItems.length > 1);
 
   entry.currentIndex = nextIndex;
-  var nextSrc = encodeSrc(entry.images[nextIndex].src);
+  var nextItem = entry.allItems[nextIndex];
 
-  if (entry.showingFront) {
-    entry.back.src = nextSrc;
-    entry.back.classList.add('active');
-    entry.front.classList.add('active');
-  } else {
-    entry.front.src = nextSrc;
-    entry.back.classList.remove('active');
-    entry.front.classList.remove('active');
+  function applySrc(src) {
+    if (entry.showingFront) {
+      entry.back.src = src;
+      entry.back.classList.add('active');
+      entry.front.classList.add('active');
+    } else {
+      entry.front.src = src;
+      entry.back.classList.remove('active');
+      entry.front.classList.remove('active');
+    }
+    entry.showingFront = !entry.showingFront;
   }
-  entry.showingFront = !entry.showingFront;
+
+  if (nextItem.type === 'image') {
+    applySrc(encodeSrc(nextItem.src));
+  } else {
+    // Generate thumbnail from video frame
+    generateVideoThumbnail(nextItem.src, applySrc);
+  }
 }
 
 /* ============================================================
