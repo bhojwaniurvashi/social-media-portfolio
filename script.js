@@ -84,53 +84,13 @@ function renderSectionCards() {
     var coverSrc = images.length > 0 ? images[0].src : '';
 
     if (allItems.length > 1) {
-      // Two stacked images for crossfade rotation
-      var front = document.createElement('img');
-      front.alt = section.name;
-      front.className = 'cover-front';
-
-      var back = document.createElement('img');
-      back.alt = section.name;
-      back.className = 'cover-back';
-
-      // For the initial cover, use first image if available; otherwise generate from first video
-      if (coverSrc) {
-        front.src = encodeSrc(coverSrc);
-      } else {
-        // Video-only section: generate thumbnail for initial cover
-        generateVideoThumbnail(videos[0].src, function (dataUrl) {
-          front.src = dataUrl;
-        });
-      }
-
+      var front = makeCoverMedia(allItems[0], section.name, 'cover-front');
+      var back  = makeCoverMedia(allItems[1], section.name, 'cover-back');
       cover.appendChild(front);
       cover.appendChild(back);
-
       rotatingCovers.push({ front: front, back: back, allItems: allItems, currentIndex: 0, showingFront: true });
     } else if (allItems.length === 1) {
-      var singleItem = allItems[0];
-      if (singleItem.type === 'image') {
-        var img = document.createElement('img');
-        img.src = encodeSrc(singleItem.src);
-        img.alt = section.name;
-        img.loading = 'lazy';
-        img.onerror = function () {
-          cover.innerHTML = '<div class="section-card__placeholder"><span>No Preview</span></div>';
-        };
-        cover.appendChild(img);
-      } else {
-        // Single video — generate thumbnail
-        var thumbImg = document.createElement('img');
-        thumbImg.alt = section.name;
-        thumbImg.loading = 'lazy';
-        generateVideoThumbnail(singleItem.src, function (dataUrl) {
-          thumbImg.src = dataUrl;
-        });
-        thumbImg.onerror = function () {
-          cover.innerHTML = '<div class="section-card__placeholder"><span>No Preview</span></div>';
-        };
-        cover.appendChild(thumbImg);
-      }
+      cover.appendChild(makeCoverMedia(allItems[0], section.name, ''));
     } else {
       cover.innerHTML = '<div class="section-card__placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="rgba(56,189,248,0.3)"/><polygon points="19,15 19,33 35,24" fill="white"/></svg></div>';
     }
@@ -169,76 +129,54 @@ function renderSectionCards() {
   }
 }
 
-/**
- * Generate a thumbnail from a video file by capturing the first visible frame.
- * Calls callback(dataUrl) once the frame is captured.
- */
-function generateVideoThumbnail(videoSrc, callback) {
-  var video = document.createElement('video');
-  video.preload = 'auto';
-  video.muted = true;
-  video.playsInline = true;
-  video.src = encodeSrc(videoSrc);
-
-  var captured = false;
-
-  function drawFrame() {
-    if (captured) return;
-    captured = true;
-    try {
-      var w = video.videoWidth || 640;
-      var h = video.videoHeight || 640;
-      var canvas = document.createElement('canvas');
-      canvas.width = w;
-      canvas.height = h;
-      canvas.getContext('2d').drawImage(video, 0, 0, w, h);
-      callback(canvas.toDataURL('image/jpeg', 0.8));
-    } catch (e) { /* security error — leave blank */ }
+/** Create an img or muted video element for use as a cover thumbnail */
+function makeCoverMedia(item, altText, className) {
+  if (item.type === 'image') {
+    var img = document.createElement('img');
+    img.src = encodeSrc(item.src);
+    img.alt = altText;
+    img.loading = 'lazy';
+    if (className) img.className = className;
+    return img;
+  } else {
+    var vid = document.createElement('video');
+    vid.src = encodeSrc(item.src);
+    vid.muted = true;
+    vid.playsInline = true;
+    vid.preload = 'metadata';
+    if (className) vid.className = className;
+    vid.addEventListener('loadedmetadata', function () {
+      vid.currentTime = vid.duration > 5 ? 5 : vid.duration * 0.5;
+    });
+    return vid;
   }
-
-  video.addEventListener('seeked', drawFrame);
-
-  // canplay guarantees enough data is decoded to draw a frame
-  video.addEventListener('canplay', function () {
-    if (captured) return;
-    var target = video.duration > 5 ? 5 : (video.duration > 0.1 ? video.duration * 0.5 : 0);
-    if (Math.abs(video.currentTime - target) < 0.05) {
-      drawFrame(); // already at target, seeked won't fire
-    } else {
-      video.currentTime = target;
-    }
-  });
 }
 
-/** Pick a random next item (image or video) and crossfade */
+/** Pick a random next item and crossfade the cover */
 function rotateCover(entry) {
   var nextIndex;
   do {
     nextIndex = Math.floor(Math.random() * entry.allItems.length);
   } while (nextIndex === entry.currentIndex && entry.allItems.length > 1);
-
   entry.currentIndex = nextIndex;
+
   var nextItem = entry.allItems[nextIndex];
+  var newEl = makeCoverMedia(nextItem, '', '');
 
-  function applySrc(src) {
-    if (entry.showingFront) {
-      entry.back.src = src;
-      entry.back.classList.add('active');
-      entry.front.classList.add('active');
-    } else {
-      entry.front.src = src;
-      entry.back.classList.remove('active');
-      entry.front.classList.remove('active');
-    }
-    entry.showingFront = !entry.showingFront;
-  }
-
-  if (nextItem.type === 'image') {
-    applySrc(encodeSrc(nextItem.src));
+  if (entry.showingFront) {
+    newEl.className = 'cover-back';
+    entry.front.parentNode && entry.front.parentNode.replaceChild(newEl, entry.back);
+    entry.back = newEl;
+    entry.back.classList.add('active');
+    entry.front.classList.add('active');
   } else {
-    // Generate thumbnail from video frame
-    generateVideoThumbnail(nextItem.src, applySrc);
+    newEl.className = 'cover-front';
+    entry.back.parentNode && entry.back.parentNode.replaceChild(newEl, entry.front);
+    entry.front = newEl;
+    entry.back.classList.remove('active');
+    entry.front.classList.remove('active');
   }
+  entry.showingFront = !entry.showingFront;
 }
 
 /* ============================================================

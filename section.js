@@ -47,56 +47,25 @@
         openLightbox(item);
       });
     } else {
-      // Show a thumbnail image for the video card (generated from the video itself)
-      var thumbImg = document.createElement('img');
-      thumbImg.alt = item.alt;
-      thumbImg.loading = 'lazy';
-
-      (function (src, img, cardEl) {
-        var video = document.createElement('video');
-        video.preload = 'auto';
-        video.muted = true;
-        video.playsInline = true;
-        video.src = encodeSrc(src);
-
-        var captured = false;
-
-        function drawFrame() {
-          if (captured) return;
-          captured = true;
-          try {
-            var w = video.videoWidth || 640;
-            var h = video.videoHeight || 640;
-            var canvas = document.createElement('canvas');
-            canvas.width = w;
-            canvas.height = h;
-            canvas.getContext('2d').drawImage(video, 0, 0, w, h);
-            img.src = canvas.toDataURL('image/jpeg', 0.8);
-          } catch (e) { /* security error — leave blank */ }
-        }
-
-        video.addEventListener('seeked', drawFrame);
-
-        video.addEventListener('canplay', function () {
-          if (captured) return;
-          var target = video.duration > 5 ? 5 : (video.duration > 0.1 ? video.duration * 0.5 : 0);
-          if (Math.abs(video.currentTime - target) < 0.05) {
-            drawFrame();
-          } else {
-            video.currentTime = target;
-          }
-        });
-
-        video.onerror = function () {
-          cardEl.innerHTML = '<div class="media-error"><span>Video unavailable</span></div>';
-        };
-      }(item.src, thumbImg, card));
+      // Use a muted video element as the thumbnail — seeking to 5s for a representative frame
+      var thumb = document.createElement('video');
+      thumb.src = encodeSrc(item.src);
+      thumb.muted = true;
+      thumb.playsInline = true;
+      thumb.preload = 'metadata';
+      thumb.className = 'video-thumb';
+      thumb.addEventListener('loadedmetadata', function () {
+        thumb.currentTime = thumb.duration > 5 ? 5 : thumb.duration * 0.5;
+      });
+      thumb.onerror = function () {
+        card.innerHTML = '<div class="media-error"><span>Video unavailable</span></div>';
+      };
 
       var overlay = document.createElement('div');
       overlay.className = 'play-overlay';
       overlay.innerHTML = '<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.5)"/><polygon points="19,15 19,33 35,24" fill="white"/></svg>';
 
-      card.appendChild(thumbImg);
+      card.appendChild(thumb);
       card.appendChild(overlay);
 
       card.addEventListener('click', function () {

@@ -470,30 +470,32 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: relative;
 }
 
-.section-card__cover img {
+.section-card__cover img,
+.section-card__cover video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
 }
 
 /* Rotating cover crossfade */
-.section-card__cover img.cover-front,
-.section-card__cover img.cover-back {
+.section-card__cover .cover-front,
+.section-card__cover .cover-back {
   position: absolute;
   top: 0;
   left: 0;
   transition: opacity 3s ease-in-out;
 }
 
-.section-card__cover img.cover-back {
+.section-card__cover .cover-back {
   opacity: 0;
 }
 
-.section-card__cover img.cover-back.active {
+.section-card__cover .cover-back.active {
   opacity: 1;
 }
 
-.section-card__cover img.cover-front.active {
+.section-card__cover .cover-front.active {
   opacity: 0;
 }
 
@@ -602,11 +604,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 .detail-card img,
-.detail-card video {
+.detail-card video,
+.detail-card .video-thumb {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
 }
 
 /* Video cards use 4:5 portrait ratio */
