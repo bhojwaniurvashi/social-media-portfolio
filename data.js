@@ -195,7 +195,7 @@ const CASE_STUDIES = [
   {
     id: 'instagram-growth',
     title: 'Instagram Insights',
-    desc: 'Short-form video content and audience-focused storytelling contributed to increased reach, profile visits, and overall organic visibility during the reporting period.',
+    desc: 'Monthly Instagram performance breakdown focusing on reach, views, and profile activity.',
     images: [
       'images/Performance Insights/IG/Picture1.jpg',
       'images/Performance Insights/IG/Picture2.jpg',
@@ -205,7 +205,7 @@ const CASE_STUDIES = [
   {
     id: 'meta-ads',
     title: 'Facebook Insights',
-    desc: 'Meta ads performance scaling using A/B creative testing, audience segmentation, and retargeting funnels.',
+    desc: 'Monthly Facebook performance analysis highlighting video performance, audience engagement, and traffic-driving metrics.',
     images: [
       'images/Performance Insights/FB/Picture4.png',
       'images/Performance Insights/FB/Picture5.png',
@@ -217,7 +217,7 @@ const CASE_STUDIES = [
   {
     id: 'linkedin-analytics',
     title: 'LinkedIn Insights',
-    desc: 'LinkedIn content strategy driving professional visibility, connection growth, and meaningful engagement with a targeted B2B audience.',
+    desc: 'Monthly LinkedIn analytics showcasing professional audience growth, visibility, and content performance.',
     images: [
       'images/Performance Insights/Linkedin/Picture9.png',
       'images/Performance Insights/Linkedin/Picture10.png',
