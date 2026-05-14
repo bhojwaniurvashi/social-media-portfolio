@@ -342,9 +342,18 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 #case h2 {
   font-size: var(--text-3xl);
   font-weight: 700;
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-4);
   text-align: center;
   color: var(--color-text);
+}
+
+#case .value {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  max-width: 680px;
+  margin: 0 auto var(--space-12);
 }
 
 .case-grid {
@@ -759,7 +768,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: fixed;
   inset: 0;
   z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+#cs-lightbox[hidden] { display: none; }
 
 #cs-lightbox .lightbox-backdrop {
   position: absolute;
@@ -874,6 +888,41 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .lightbox-close:hover {
   background: rgba(56, 189, 248, 0.3);
+}
+
+.lightbox-prev,
+.lightbox-next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2001;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.75);
+  color: #fff;
+  font-size: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  line-height: 1;
+}
+
+.lightbox-prev { left: 1.25rem; }
+.lightbox-next { right: 1.25rem; }
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(56, 189, 248, 0.35);
+  transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 767px) {
+  .lightbox-prev { left: 0.5rem; }
+  .lightbox-next { right: 0.5rem; }
 }
 
 /* ============================================================

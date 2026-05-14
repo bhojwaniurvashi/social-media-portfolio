@@ -50,10 +50,12 @@
 <!-- LIGHTBOX -->
 <div id="cs-lightbox" hidden>
   <div class="lightbox-backdrop"></div>
+  <button class="lightbox-prev" aria-label="Previous">&#8249;</button>
   <div class="lightbox-content">
     <button class="lightbox-close" aria-label="Close">&times;</button>
     <!-- img injected here -->
   </div>
+  <button class="lightbox-next" aria-label="Next">&#8250;</button>
 </div>
 
 <script src="data.js"></script>
@@ -75,7 +77,7 @@
   var srcs = study.images || (study.image ? [study.image] : []);
   var grid = document.getElementById('cs-gallery-grid');
 
-  srcs.forEach(function (src) {
+  srcs.forEach(function (src, index) {
     var item = document.createElement('div');
     item.className = 'cs-gallery__item';
 
@@ -86,15 +88,16 @@
     img.onerror = function () { item.style.display = 'none'; };
 
     item.appendChild(img);
-    item.addEventListener('click', function () { openLightbox(src, study.title); });
+    item.addEventListener('click', function () { openLightbox(index); });
     grid.appendChild(item);
   });
 
   // Lightbox
   var lightbox = document.getElementById('cs-lightbox');
   var lbContent = lightbox.querySelector('.lightbox-content');
+  var currentIndex = 0;
 
-  function openLightbox(src, alt) {
+  function renderLbImage(src, alt) {
     var existing = lbContent.querySelector('img');
     if (existing) existing.remove();
     var img = document.createElement('img');
@@ -102,8 +105,27 @@
     img.alt = alt;
     var closeBtn = lbContent.querySelector('.lightbox-close');
     lbContent.insertBefore(img, closeBtn);
+  }
+
+  function updateArrows() {
+    lightbox.querySelector('.lightbox-prev').style.visibility = currentIndex > 0 ? 'visible' : 'hidden';
+    lightbox.querySelector('.lightbox-next').style.visibility = currentIndex < srcs.length - 1 ? 'visible' : 'hidden';
+  }
+
+  function openLightbox(index) {
+    currentIndex = index;
+    renderLbImage(srcs[currentIndex], study.title);
     lightbox.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
+    updateArrows();
+  }
+
+  function navigate(dir) {
+    var next = currentIndex + dir;
+    if (next < 0 || next >= srcs.length) return;
+    currentIndex = next;
+    renderLbImage(srcs[currentIndex], study.title);
+    updateArrows();
   }
 
   function closeLightbox() {
@@ -115,8 +137,13 @@
 
   lightbox.querySelector('.lightbox-backdrop').addEventListener('click', closeLightbox);
   lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+  lightbox.querySelector('.lightbox-prev').addEventListener('click', function () { navigate(-1); });
+  lightbox.querySelector('.lightbox-next').addEventListener('click', function () { navigate(1); });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !lightbox.hasAttribute('hidden')) closeLightbox();
+    if (lightbox.hasAttribute('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
   });
 
   // Hamburger
