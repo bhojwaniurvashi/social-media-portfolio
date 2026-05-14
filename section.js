@@ -61,30 +61,30 @@
 
         var captured = false;
 
-        function capture() {
+        function drawFrame() {
           if (captured) return;
-          if (!video.videoWidth || !video.videoHeight) return;
           captured = true;
           try {
+            var w = video.videoWidth || 640;
+            var h = video.videoHeight || 640;
             var canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            var ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvas.width = w;
+            canvas.height = h;
+            canvas.getContext('2d').drawImage(video, 0, 0, w, h);
             img.src = canvas.toDataURL('image/jpeg', 0.8);
-          } catch (e) {
-            // CORS or decode error — leave blank
-          }
+          } catch (e) { /* security error — leave blank */ }
         }
 
-        video.addEventListener('seeked', capture);
+        video.addEventListener('seeked', drawFrame);
 
-        video.addEventListener('loadedmetadata', function () {
-          video.currentTime = video.duration > 0.2 ? 0.1 : 0;
-        });
-
-        video.addEventListener('loadeddata', function () {
-          if (!captured) setTimeout(function () { if (!captured) capture(); }, 200);
+        video.addEventListener('canplay', function () {
+          if (captured) return;
+          var target = video.duration > 5 ? 5 : (video.duration > 0.1 ? video.duration * 0.5 : 0);
+          if (Math.abs(video.currentTime - target) < 0.05) {
+            drawFrame();
+          } else {
+            video.currentTime = target;
+          }
         });
 
         video.onerror = function () {
