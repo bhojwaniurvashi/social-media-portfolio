@@ -19,8 +19,8 @@
   <a href="index.html" class="nav-brand">Urvashi Bhojwani</a>
   <ul class="nav-links">
     <li><a href="#hero">Home</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#case">Case Studies</a></li>
+    <li><a href="#results">Growth & Results</a></li>
+    <li><a href="#case">Monthly Performance Insights</a></li>
     <li><a href="#work">Creative Gallery</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -35,45 +35,45 @@
 <section id="hero">
   <div class="hero-bg" aria-hidden="true"></div>
   <h1>Urvashi Bhojwani</h1>
-  <p class="tagline">Social Media Manager | Content Strategist | Paid Ads Specialist</p>
-  <p class="value-prop">Helping brands grow with scroll-stopping content + performance-driven social media.</p>
+  <p class="tagline">Social Media Manager | Creative Strategist</p>
+  <p class="value-prop">Turning ideas into engaging social experiences through content strategy, storytelling, and trend-driven marketing.</p>
   <div class="hero-cta">
-    <a href="#case">Case Studies</a>
-    <a href="#work">Creative Work</a>
+    <a href="#case">Monthly Performance Insights</a>
+    <a href="#work">Creative Gallery</a>
     <a href="#contact">Contact</a>
   </div>
 </section>
 
 <!-- METRICS -->
 <section id="results">
-  <h2>Results Snapshot</h2>
+  <h2>Growth & Results</h2>
   <div class="metrics-grid">
     <div class="metric-card">
       <span class="metric-icon">&#128101;</span>
       <span class="metric-value" data-target="15">0</span>
-      <span class="metric-label">Clients Served</span>
+      <span class="metric-label">National & International Brands Managed</span>
     </div>
     <div class="metric-card">
       <span class="metric-icon">&#128197;</span>
       <span class="metric-value" data-target="225">0</span>
-      <span class="metric-label">Posts / Month</span>
+      <span class="metric-label">Monthly Content Deliverables</span>
     </div>
     <div class="metric-card">
       <span class="metric-icon">&#128200;</span>
-      <span class="metric-value" data-target="189">0</span>
-      <span class="metric-label">Total Reach (K+)</span>
+      <span class="metric-value">1.3M+</span>
+      <span class="metric-label">Monthly Reach</span>
     </div>
     <div class="metric-card">
       <span class="metric-icon">&#128640;</span>
-      <span class="metric-value" data-target="2300">0</span>
-      <span class="metric-label">Follower Growth</span>
+      <span class="metric-value">2.1M+</span>
+      <span class="metric-label">Monthly Views</span>
     </div>
   </div>
 </section>
 
 <!-- CASE STUDIES -->
 <section id="case">
-  <h2>Case Studies</h2>
+  <h2>Monthly Performance Insights</h2>
   <div class="case-grid" id="case-grid">
     <!-- Injected by script.js -->
   </div>
@@ -89,42 +89,157 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <h2>Let's Work Together</h2>
+<title>Contact Section</title>
 
-  <a href="mailto:urvashi.bhojwani@example.com" class="contact-email">urvashi.bhojwani@example.com</a>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0f0f14;
+    margin: 0;
+    padding: 0;
+    color: white;
+  }
 
-  <form id="contact-form" action="" novalidate>
-    <div class="form-group">
-      <label for="contact-name">Name</label>
-      <input type="text" id="contact-name" name="name" maxlength="100" required placeholder="Your name" autocomplete="name">
-    </div>
-    <div class="form-group">
-      <label for="contact-email">Email</label>
-      <input type="email" id="contact-email" name="email" maxlength="254" required placeholder="your@email.com" autocomplete="email">
-    </div>
-    <div class="form-group">
-      <label for="contact-message">Message</label>
-      <textarea id="contact-message" name="message" maxlength="1000" required placeholder="Tell me about your project..." rows="5"></textarea>
-    </div>
-    <button type="submit" class="btn-submit">Send Message</button>
-    <div class="success-msg" hidden aria-live="polite">
-      Thanks! I'll be in touch soon.
-    </div>
-  </form>
+  .contact-section {
+    max-width: 1000px;
+    margin: 80px;
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+  }
 
+  /* LEFT SIDE */
+  .contact-info {
+    flex: 1;
+  }
+
+  .contact-info h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+
+  .contact-info p {
+    color: #bbb;
+    margin-bottom: 25px;
+    line-height: 1.5;
+  }
+
+  /* GRADIENT CARD */
+  .info-box {
+    position: relative;
+    padding: 0.75px;
+    border-radius: 14px;
+    margin: 14px 0;
+    background:linear-gradient(
+      270deg,
+     #4db1dc,
+     #76c1ed,
+     #60d1fa,
+     #8ad8ff,
+     #4db1dc
+    );
+    background-size: 300% 300%;
+    animation: gradientMove 8s ease infinite;
+
+    transition: all 0.3s ease;
+  }
+
+  .info-inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 13px;
+    background: #14141c;
+  }
+
+  .info-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(59,130,246,0.35);
+}
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .icon {
+    font-size: 20px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1f1f2a;
+    border-radius: 10px;
+  }
+
+  .value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    word-break: break-word;
+  }
+
+  .info-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .contact-section {
+      flex-direction: column;
+    }
+  }
+</style>
+
+</head>
+
+<body>
+
+<div class="contact-section">
+
+  <div class="contact-info">
+    <h2>Let’s Work Together 🚀</h2>
+
+    <div class="info-box">
+      <div class="info-inner">
+        <div class="icon">📧</div>
+       <div class="info-text" class="value">bhojwaniurvashi24@gmail.com</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-inner">
+        <div class="icon">📞</div>
+        <div>
+          <div class="info-text" class="value">+91 98236 98230</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-inner">
+        <div class="icon">📍</div>
+        <div>
+          <div class="info-text" class="value">Pune, India</div>
+        </div>
+      </div>
+    </div>
   <div class="social-links">
-    <a href="https://linkedin.com/in/urvashi-bhojwani" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+    <a href="https://www.linkedin.com/in/urvashi-bhojwani-a17002194/" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
       </svg>
       LinkedIn
     </a>
-    <a href="https://instagram.com/urvashi.bhojwani" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-      </svg>
-      Instagram
-    </a>
+  </div>
+  </div>
+  </div>
   </div>
 </section>
 

@@ -194,16 +194,26 @@ const SECTIONS = [
 const CASE_STUDIES = [
   {
     id: 'instagram-growth',
-    title: 'Instagram Growth System',
-    desc: 'Organic growth strategy using Reels, hashtag research, and consistent posting cadence for a lifestyle brand.',
-    result: '300 to 2.3K followers in 3 months',
-    image: 'images/Creatives for website/Artboard 1 (15).jpg',
+    title: 'Instagram Insights',
+    desc: 'Short-form video content and audience-focused storytelling contributed to increased reach, profile visits, and overall organic visibility during the reporting period.',
+    image: 'images/Performance Insights/IG/Picture1.jpg', 
+    image: 'images/Performance Insights/IG/Picture2.jpg',
+    image: 'images/Performance Insights/IG/Picture3.jpg',
   },
   {
     id: 'meta-ads',
-    title: 'High Reach Meta Ads Campaign',
+    title: 'Facebook Insights',
     desc: 'Meta ads performance scaling using A/B creative testing, audience segmentation, and retargeting funnels.',
-    result: '3x ROAS achieved in 6 weeks',
+    image: 'images/Performance Insights/FB/Picture4.png',
+    image: 'images/Performance Insights/FB/Picture5.png',
+    image: 'images/Performance Insights/FB/Picture6.png',
+    image: 'images/Performance Insights/FB/Picture7.png',
+    image: 'images/Performance Insights/FB/Picture8.png',
+  },
+   {
+    id: 'linkedin-analytics',
+    title: 'Linkedin Insights',
+    desc: 'Meta ads performance scaling using A/B creative testing, audience segmentation, and retargeting funnels.',
     image: 'images/Creatives for website/Artboard 2 (14).jpg',
   },
 ];
