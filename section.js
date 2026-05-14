@@ -52,33 +52,46 @@
       thumbImg.alt = item.alt;
       thumbImg.loading = 'lazy';
 
-      // Generate thumbnail from video frame
-      var thumbVideo = document.createElement('video');
-      thumbVideo.preload = 'metadata';
-      thumbVideo.muted = true;
-      thumbVideo.playsInline = true;
-      thumbVideo.src = encodeSrc(item.src);
+      (function (src, img, cardEl) {
+        var video = document.createElement('video');
+        video.preload = 'auto';
+        video.muted = true;
+        video.playsInline = true;
+        video.crossOrigin = 'anonymous';
+        video.src = encodeSrc(src);
 
-      thumbVideo.addEventListener('loadeddata', function () {
-        thumbVideo.currentTime = Math.min(1, thumbVideo.duration || 0);
-      });
+        var captured = false;
 
-      thumbVideo.addEventListener('seeked', function () {
-        try {
-          var canvas = document.createElement('canvas');
-          canvas.width = thumbVideo.videoWidth || 640;
-          canvas.height = thumbVideo.videoHeight || 640;
-          var ctx = canvas.getContext('2d');
-          ctx.drawImage(thumbVideo, 0, 0, canvas.width, canvas.height);
-          thumbImg.src = canvas.toDataURL('image/jpeg', 0.8);
-        } catch (e) {
-          // fallback — leave blank
+        function capture() {
+          if (captured) return;
+          if (!video.videoWidth || !video.videoHeight) return;
+          captured = true;
+          try {
+            var canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            img.src = canvas.toDataURL('image/jpeg', 0.8);
+          } catch (e) {
+            // CORS or decode error — leave blank
+          }
         }
-      });
 
-      thumbVideo.onerror = function () {
-        card.innerHTML = '<div class="media-error"><span>Video unavailable</span></div>';
-      };
+        video.addEventListener('seeked', capture);
+
+        video.addEventListener('loadedmetadata', function () {
+          video.currentTime = video.duration > 0.2 ? 0.1 : 0;
+        });
+
+        video.addEventListener('loadeddata', function () {
+          if (!captured) setTimeout(function () { if (!captured) capture(); }, 200);
+        });
+
+        video.onerror = function () {
+          cardEl.innerHTML = '<div class="media-error"><span>Video unavailable</span></div>';
+        };
+      }(item.src, thumbImg, card));
 
       var overlay = document.createElement('div');
       overlay.className = 'play-overlay';

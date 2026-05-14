@@ -175,26 +175,43 @@ function renderSectionCards() {
  */
 function generateVideoThumbnail(videoSrc, callback) {
   var video = document.createElement('video');
-  video.preload = 'metadata';
+  video.preload = 'auto';
   video.muted = true;
   video.playsInline = true;
+  video.crossOrigin = 'anonymous';
   video.src = encodeSrc(videoSrc);
 
-  video.addEventListener('loadeddata', function () {
-    // Seek to 1 second (or 0 if video is shorter) for a better frame
-    video.currentTime = Math.min(1, video.duration || 0);
-  });
+  var captured = false;
 
-  video.addEventListener('seeked', function () {
+  function capture() {
+    if (captured) return;
+    if (!video.videoWidth || !video.videoHeight) return;
+    captured = true;
     try {
       var canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth || 640;
-      canvas.height = video.videoHeight || 640;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
       var ctx = canvas.getContext('2d');
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       callback(canvas.toDataURL('image/jpeg', 0.8));
     } catch (e) {
-      // CORS or other error — leave image empty
+      // CORS or decode error — leave image empty
+    }
+  }
+
+  video.addEventListener('seeked', capture);
+
+  video.addEventListener('loadedmetadata', function () {
+    // Seek slightly past 0 so seeked always fires
+    video.currentTime = video.duration > 0.2 ? 0.1 : 0;
+  });
+
+  // Fallback: if seeked never fires but data is ready, capture directly
+  video.addEventListener('loadeddata', function () {
+    if (!captured) {
+      setTimeout(function () {
+        if (!captured) capture();
+      }, 200);
     }
   });
 }
