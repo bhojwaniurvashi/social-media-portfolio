@@ -57,7 +57,6 @@
         video.preload = 'auto';
         video.muted = true;
         video.playsInline = true;
-        video.crossOrigin = 'anonymous';
         video.src = encodeSrc(src);
 
         var captured = false;

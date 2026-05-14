@@ -178,7 +178,6 @@ function generateVideoThumbnail(videoSrc, callback) {
   video.preload = 'auto';
   video.muted = true;
   video.playsInline = true;
-  video.crossOrigin = 'anonymous';
   video.src = encodeSrc(videoSrc);
 
   var captured = false;
