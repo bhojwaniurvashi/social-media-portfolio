@@ -18,13 +18,14 @@ function renderCaseStudies() {
     card.className = 'case-card';
     card.href = 'case-study.html?id=' + encodeURIComponent(study.id);
 
+    var srcs = study.images || (study.image ? [study.image] : []);
+    var coverSrc = srcs[0] || '';
+
     var img = document.createElement('img');
-    img.src = encodeSrc(study.image);
+    img.src = encodeSrc(coverSrc);
     img.alt = study.title;
     img.loading = 'lazy';
-    img.onerror = function () {
-      img.style.display = 'none';
-    };
+    img.onerror = function () { img.style.display = 'none'; };
 
     var body = document.createElement('div');
     body.className = 'case-body';
@@ -36,17 +37,12 @@ function renderCaseStudies() {
     desc.className = 'case-desc';
     desc.textContent = study.desc;
 
-    var result = document.createElement('span');
-    result.className = 'case-result';
-    result.textContent = study.result;
-
     var cta = document.createElement('span');
     cta.className = 'case-cta';
-    cta.textContent = 'View Case Study \u2192';
+    cta.textContent = 'View All Insights \u2192';
 
     body.appendChild(h3);
     body.appendChild(desc);
-    body.appendChild(result);
     body.appendChild(cta);
     card.appendChild(img);
     card.appendChild(body);

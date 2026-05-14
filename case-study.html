@@ -16,7 +16,7 @@
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="index.html#results">Results</a></li>
-    <li><a href="index.html#case">Case Studies</a></li>
+    <li><a href="index.html#case">Monthly Performance Insights</a></li>
     <li><a href="index.html#work">Creative Gallery</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
@@ -27,28 +27,34 @@
   </button>
 </nav>
 
-<!-- CASE STUDY CONTENT -->
+<!-- HEADER -->
 <section class="detail-header">
-  <a href="index.html#case" class="back-link">&larr; Back to Case Studies</a>
-  <h1 id="cs-title">Case Study</h1>
+  <a href="index.html#case" class="back-link">&larr; Back to Monthly Performance Insights</a>
+  <h1 id="cs-title">Insights</h1>
 </section>
 
+<!-- DESCRIPTION -->
 <section class="case-detail">
-  <div class="case-detail__hero">
-    <img id="cs-image" src="" alt="">
-  </div>
   <div class="case-detail__body">
     <p id="cs-desc" class="case-detail__desc"></p>
-    <div class="case-detail__result">
-      <span class="result-label">Result:</span>
-      <span id="cs-result" class="result-value"></span>
-    </div>
-    <div class="case-detail__content" id="cs-content">
-      <h2>About This Project</h2>
-      <p>Detailed case study content coming soon. This section will include strategy breakdown, execution timeline, metrics analysis, and key takeaways.</p>
-    </div>
   </div>
 </section>
+
+<!-- INSIGHTS IMAGE GRID -->
+<section class="cs-gallery">
+  <div class="cs-gallery__grid" id="cs-gallery-grid">
+    <!-- Injected by script below -->
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="cs-lightbox" hidden>
+  <div class="lightbox-backdrop"></div>
+  <div class="lightbox-content">
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <!-- img injected here -->
+  </div>
+</div>
 
 <script src="data.js"></script>
 <script>
@@ -58,18 +64,60 @@
   var study = CASE_STUDIES.find(function (s) { return s.id === id; });
 
   if (!study) {
-    document.getElementById('cs-title').textContent = 'Case Study Not Found';
+    document.getElementById('cs-title').textContent = 'Not Found';
     return;
   }
 
   document.title = study.title + ' | Urvashi Bhojwani';
   document.getElementById('cs-title').textContent = study.title;
   document.getElementById('cs-desc').textContent = study.desc;
-  document.getElementById('cs-result').textContent = study.result;
 
-  var img = document.getElementById('cs-image');
-  img.src = encodeSrc(study.image);
-  img.alt = study.title;
+  var srcs = study.images || (study.image ? [study.image] : []);
+  var grid = document.getElementById('cs-gallery-grid');
+
+  srcs.forEach(function (src) {
+    var item = document.createElement('div');
+    item.className = 'cs-gallery__item';
+
+    var img = document.createElement('img');
+    img.src = encodeSrc(src);
+    img.alt = study.title;
+    img.loading = 'lazy';
+    img.onerror = function () { item.style.display = 'none'; };
+
+    item.appendChild(img);
+    item.addEventListener('click', function () { openLightbox(src, study.title); });
+    grid.appendChild(item);
+  });
+
+  // Lightbox
+  var lightbox = document.getElementById('cs-lightbox');
+  var lbContent = lightbox.querySelector('.lightbox-content');
+
+  function openLightbox(src, alt) {
+    var existing = lbContent.querySelector('img');
+    if (existing) existing.remove();
+    var img = document.createElement('img');
+    img.src = encodeSrc(src);
+    img.alt = alt;
+    var closeBtn = lbContent.querySelector('.lightbox-close');
+    lbContent.insertBefore(img, closeBtn);
+    lightbox.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    var img = lbContent.querySelector('img');
+    if (img) img.remove();
+    lightbox.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  lightbox.querySelector('.lightbox-backdrop').addEventListener('click', closeLightbox);
+  lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !lightbox.hasAttribute('hidden')) closeLightbox();
+  });
 
   // Hamburger
   var hamburger = document.querySelector('.hamburger');

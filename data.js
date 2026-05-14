@@ -196,25 +196,35 @@ const CASE_STUDIES = [
     id: 'instagram-growth',
     title: 'Instagram Insights',
     desc: 'Short-form video content and audience-focused storytelling contributed to increased reach, profile visits, and overall organic visibility during the reporting period.',
-    image: 'images/Performance Insights/IG/Picture1.jpg', 
-    image: 'images/Performance Insights/IG/Picture2.jpg',
-    image: 'images/Performance Insights/IG/Picture3.jpg',
+    images: [
+      'images/Performance Insights/IG/Picture1.jpg',
+      'images/Performance Insights/IG/Picture2.jpg',
+      'images/Performance Insights/IG/Picture3.jpg',
+    ],
   },
   {
     id: 'meta-ads',
     title: 'Facebook Insights',
     desc: 'Meta ads performance scaling using A/B creative testing, audience segmentation, and retargeting funnels.',
-    image: 'images/Performance Insights/FB/Picture4.png',
-    image: 'images/Performance Insights/FB/Picture5.png',
-    image: 'images/Performance Insights/FB/Picture6.png',
-    image: 'images/Performance Insights/FB/Picture7.png',
-    image: 'images/Performance Insights/FB/Picture8.png',
+    images: [
+      'images/Performance Insights/FB/Picture4.png',
+      'images/Performance Insights/FB/Picture5.png',
+      'images/Performance Insights/FB/Picture6.png',
+      'images/Performance Insights/FB/Picture7.jpg',
+      'images/Performance Insights/FB/Picture8.jpg',
+    ],
   },
-   {
+  {
     id: 'linkedin-analytics',
-    title: 'Linkedin Insights',
-    desc: 'Meta ads performance scaling using A/B creative testing, audience segmentation, and retargeting funnels.',
-    image: 'images/Creatives for website/Artboard 2 (14).jpg',
+    title: 'LinkedIn Insights',
+    desc: 'LinkedIn content strategy driving professional visibility, connection growth, and meaningful engagement with a targeted B2B audience.',
+    images: [
+      'images/Performance Insights/Linkedin/Picture9.png',
+      'images/Performance Insights/Linkedin/Picture10.png',
+      'images/Performance Insights/Linkedin/Picture11.jpg',
+      'images/Performance Insights/Linkedin/Picture12.png',
+      'images/Performance Insights/Linkedin/Picture13.png',
+    ],
   },
 ];
 

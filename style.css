@@ -719,6 +719,91 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 /* ============================================================
+   Insights image grid (case-study.html)
+   ============================================================ */
+.cs-gallery {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-8) var(--space-16);
+}
+
+.cs-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.cs-gallery__item {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cs-gallery__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(56, 189, 248, 0.18);
+}
+
+.cs-gallery__item img {
+  width: 100%;
+  height: 260px;
+  object-fit: contain;
+  background: #0f172a;
+  display: block;
+}
+
+/* Lightbox on case-study page reuses #cs-lightbox with same structure as section.html */
+#cs-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+
+#cs-lightbox .lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+#cs-lightbox .lightbox-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cs-lightbox .lightbox-content img {
+  max-width: 90vw;
+  max-height: 88vh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+#cs-lightbox .lightbox-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+}
+
+@media (max-width: 767px) {
+  .cs-gallery__grid { grid-template-columns: 1fr 1fr; }
+  .cs-gallery__item img { height: 180px; }
+}
+
+/* ============================================================
    Lightbox
    ============================================================ */
 #lightbox {
