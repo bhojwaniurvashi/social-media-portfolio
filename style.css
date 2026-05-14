@@ -1044,6 +1044,65 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
 }
 
+.contact-info-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 480px;
+  margin: 0 auto var(--space-8);
+}
+
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.info-box {
+  padding: 1.5px;
+  border-radius: 14px;
+  background: linear-gradient(270deg, #4db1dc, #76c1ed, #60d1fa, #8ad8ff, #4db1dc);
+  background-size: 300% 300%;
+  animation: gradientMove 8s ease infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+}
+
+.info-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: 13px;
+  background: #14141c;
+  overflow: hidden;
+}
+
+.info-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1f1f2a;
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.info-value {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #fff;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
 .social-links {
   display: flex;
   gap: var(--space-4);
@@ -1082,4 +1141,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .contact-email { font-size: var(--text-base); word-break: break-all; }
   .btn-submit { align-self: stretch; width: 100%; text-align: center; }
   .social-btn { flex: 1; justify-content: center; }
+  .contact-info-cards { max-width: 100%; }
+  .info-value { font-size: var(--text-xs); }
 }

@@ -90,147 +90,31 @@
 
 <!-- CONTACT -->
 <section id="contact">
-<title>Contact Section</title>
+  <h2>Let’s Work Together 🚀</h2>
 
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #0f0f14;
-    margin: 0;
-    padding: 0;
-    color: white;
-  }
-
-  .contact-section {
-    max-width: 1000px;
-    margin: 80px;
-    display: flex;
-    gap: 40px;
-    padding: 40px;
-  }
-
-  /* LEFT SIDE */
-  .contact-info {
-    flex: 1;
-  }
-
-  .contact-info h2 {
-    font-size: 30px;
-    margin-bottom: 10px;
-  }
-
-  .contact-info p {
-    color: #bbb;
-    margin-bottom: 25px;
-    line-height: 1.5;
-  }
-
-  /* GRADIENT CARD */
-  .info-box {
-    position: relative;
-    padding: 0.75px;
-    border-radius: 14px;
-    margin: 14px 0;
-    background:linear-gradient(
-      270deg,
-     #4db1dc,
-     #76c1ed,
-     #60d1fa,
-     #8ad8ff,
-     #4db1dc
-    );
-    background-size: 300% 300%;
-    animation: gradientMove 8s ease infinite;
-
-    transition: all 0.3s ease;
-  }
-
-  .info-inner {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border-radius: 13px;
-    background: #14141c;
-  }
-
-  .info-box:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px rgba(59,130,246,0.35);
-}
-
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .icon {
-    font-size: 20px;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #1f1f2a;
-    border-radius: 10px;
-  }
-
-  .value {
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-    word-break: break-word;
-  }
-
-  .info-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-}
-
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .contact-section {
-      flex-direction: column;
-    }
-  }
-</style>
-
-</head>
-
-<body>
-
-<div class="contact-section">
-
-  <div class="contact-info">
-    <h2>Let’s Work Together 🚀</h2>
-
+  <div class="contact-info-cards">
     <div class="info-box">
       <div class="info-inner">
-        <div class="icon">📧</div>
-       <div class="info-text" class="value">bhojwaniurvashi24@gmail.com</div>
+        <div class="info-icon">📧</div>
+        <span class="info-value">bhojwaniurvashi24@gmail.com</span>
       </div>
     </div>
 
     <div class="info-box">
       <div class="info-inner">
-        <div class="icon">📞</div>
-        <div>
-          <div class="info-text" class="value">+91 98236 98230</div>
-        </div>
+        <div class="info-icon">📞</div>
+        <span class="info-value">+91 98236 98230</span>
       </div>
     </div>
 
     <div class="info-box">
       <div class="info-inner">
-        <div class="icon">📍</div>
-        <div>
-          <div class="info-text" class="value">Pune, India</div>
-        </div>
+        <div class="info-icon">📍</div>
+        <span class="info-value">Pune, India</span>
       </div>
     </div>
+  </div>
+
   <div class="social-links">
     <a href="https://www.linkedin.com/in/urvashi-bhojwani-a17002194/" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -238,9 +122,6 @@
       </svg>
       LinkedIn
     </a>
-  </div>
-  </div>
-  </div>
   </div>
 </section>
 
